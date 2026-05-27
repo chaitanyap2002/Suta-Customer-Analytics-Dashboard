@@ -426,7 +426,7 @@ with tab1:
         store_overlap_df = pd.DataFrame(store_overlap_rows)
         store_summary = store_summary.merge(store_overlap_df, on="Store_Name", how="left")
         store_summary["Overlap_%"] = (store_summary["Overlap_Customers"] / store_summary["Store_Customers"] * 100).fillna(0).round(1)
-        st.dataframe(store_summary.sort_values("Revenue", ascending=False), use_container_width=True, hide_index=True)
+        st.dataframe(store_summary.sort_values("Revenue", ascending=False), width="stretch", hide_index=True)
     else:
         store_summary = pd.DataFrame()
         st.info("No store data for selected filters.")
@@ -461,7 +461,7 @@ with tab2:
             Total_Bills=("Bills", "sum"),
             Revenue=("Net_Amt", "sum"),
         )
-        st.dataframe(overlap_customer_table, use_container_width=True, hide_index=True)
+        st.dataframe(overlap_customer_table, width="stretch", hide_index=True)
     else:
         overlap_customer_table = pd.DataFrame()
         st.info("No overlap customers for selected filters.")
@@ -477,7 +477,7 @@ with tab3:
         st.bar_chart(bucket_summary.set_index("Frequency_Bucket"))
 
         st.subheader("Customer-level Frequency Table")
-        st.dataframe(store_customer_bills.sort_values("Bills", ascending=False), use_container_width=True, hide_index=True)
+        st.dataframe(store_customer_bills.sort_values("Bills", ascending=False), width="stretch", hide_index=True)
     else:
         st.info("No store data for selected filters.")
 
@@ -487,7 +487,7 @@ with tab4:
     filtered_export = filtered[export_cols].copy() if not filtered.empty else pd.DataFrame(columns=export_cols)
     if not filtered_export.empty:
         filtered_export["Txn_Date"] = filtered_export["Txn_Date"].dt.date
-    st.dataframe(filtered_export.head(1000), use_container_width=True, hide_index=True)
+    st.dataframe(filtered_export.head(1000), width="stretch", hide_index=True)
     st.caption("Preview shows first 1,000 rows only. Export includes all filtered rows.")
 
     csv_bytes = filtered_export.to_csv(index=False).encode("utf-8-sig")
